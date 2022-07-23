@@ -1,0 +1,16 @@
+{
+    "secret" :
+    {
+        "BOT_TOKEN" : "YOURBOTTOKEN"
+    },
+    "guilds" :
+    {
+        "123456456" :
+            {
+                
+                "IDLE_MESSAGE_CHANNEL_ID" : 12345678900,
+                "QUESTION_SLEEPING_TIME" : 2,
+                "SUPPORT_CHANNEL_ID" : 1234567
+            }
+    }
+}
