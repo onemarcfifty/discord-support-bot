@@ -1,4 +1,4 @@
-# FIRSTLINE (discord-support-bot) is a discord-bot
+# FIRSTLINE is a discord-bot
 
 Firstline is a fork of RALF
 

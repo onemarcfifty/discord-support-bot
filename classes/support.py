@@ -1,6 +1,6 @@
 import discord
 import traceback
-import config
+from typing import Optional
 
 # ############################################
 # the Support() class is a modal ui dialog
@@ -36,6 +36,14 @@ class Support(discord.ui.Modal, title='Open a support thread'):
         max_length=300,
     )
 
+    guildConfig={}
+
+    def __init__(self, gconfig=..., *, title: str = ..., timeout: Optional[float] = None, custom_id: str = ...) -> None:
+
+        super().__init__(title="Support")
+        self.guildConfig=gconfig    
+
+
     # ############################################
     # on_submit is called when the user submits the
     # Modal. This is where we create the thread
@@ -44,10 +52,12 @@ class Support(discord.ui.Modal, title='Open a support thread'):
 
     async def on_submit(self, interaction: discord.Interaction):
 
+
         # first let's find out which channel we will create the thread in
         theGuild = interaction.guild
         theChannel : discord.TextChannel
-        theChannel = theGuild.get_channel(config.GUILDCONFIG[f"{theGuild.id}"]["SUPPORT_CHANNEL_ID"])
+
+        theChannel = theGuild.get_channel(self.guildConfig["SUPPORT_CHANNEL_ID"])
 
         if not (theChannel is None):
             try:
@@ -60,9 +70,9 @@ class Support(discord.ui.Modal, title='Open a support thread'):
 
                 # next we want to post about the new "ticket" in the IDLE_MESSAGE_CHANNEL
 
-                theChannel = theGuild.get_channel(config.GUILDCONFIG[f"{theGuild.id}"]["IDLE_MESSAGE_CHANNEL_ID"])
+                theChannel = theGuild.get_channel(self.guildConfig["IDLE_MESSAGE_CHANNEL_ID"])
                 if (not (theChannel is None)) and (not (newThread is None)):
-                    xMsg= await theChannel.send (f'I have created a **Support Thread** on behalf of <@{interaction.user.id}> in the <#{config.GUILDCONFIG[f"{theGuild.id}"]["SUPPORT_CHANNEL_ID"]}> channel:\n\n <#{newThread.id}>\n^^^^^click here^^^\n\nMaybe you could check in and see if **you** can help ??? \nMany thanks !')
+                    xMsg= await theChannel.send (f'I have created a **Support Thread** on behalf of <@{interaction.user.id}> in the <#{self.guildConfig["SUPPORT_CHANNEL_ID"]}> channel:\n\n <#{newThread.id}>\n^^^^^click here^^^\n\nMaybe you could check in and see if **you** can help ??? \nMany thanks !')
                     xMsg= await newThread.send (f'<@{interaction.user.id}> describes the problem as follows: \n\n{self.theDescription.value} \n \n please tag the user on your reply - thank you!' )
             except Exception as e:
                 print(f"Support Error: {e}")
